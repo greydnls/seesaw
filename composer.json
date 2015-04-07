@@ -1,13 +1,12 @@
 {
   "name": "kayladnls/backalley",
-  "description": "Reverse Routing",
+  "description": "Routing, forward and backward.",
   "require": {
-    "league/route": "~1.0@dev",
-    "league/url": "~4.0@dev"
+    "league/route": "~1.0@dev"
   },
   "require-dev": {
     "phpspec/phpspec": "~2.2@dev",
-    "phpspec/nyan-formatters": "~1.0@dev"
+    "henrikbjorn/phpspec-code-coverage": "~1.0@dev"
   },
   "license": "MIT",
   "authors": [
@@ -18,7 +17,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Kayladnls\\BackAlley\\": "src/"
+      "Kayladnls\\Seesaw\\": "src/"
     }
   },
   "minimum-stability": "dev"

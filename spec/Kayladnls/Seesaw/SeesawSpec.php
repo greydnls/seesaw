@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Kayladnls\BackAlley;
+namespace spec\Kayladnls\Seesaw;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class BackAlleySpec extends ObjectBehavior
+class SeesawSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Kayladnls\BackAlley\BackAlley');
+        $this->shouldHaveType('Kayladnls\Seesaw\Seesaw');
     }
 
     function it_can_add_a_named_route()

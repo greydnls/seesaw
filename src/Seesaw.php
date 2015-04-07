@@ -1,9 +1,9 @@
-<?php namespace Kayladnls\BackAlley;
+<?php namespace Kayladnls\Seesaw;
 
 use FastRoute\BadRouteException;
 use League\Route\RouteCollection;
 
-class BackAlley
+class Seesaw
 {
     protected $namedRoutes = [];
     protected $base_url = null;

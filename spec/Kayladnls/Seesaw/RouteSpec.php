@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Kayladnls\BackAlley;
+namespace spec\Kayladnls\Seesaw;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
