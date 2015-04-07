@@ -1,8 +1,8 @@
 {
-  "name": "kayladnls/backalley",
+  "name": "kayladnls/seesaw",
   "description": "Routing, forward and backward.",
   "require": {
-    "league/route": "~1.0@dev"
+    "league/route": "~1.0"
   },
   "require-dev": {
     "phpspec/phpspec": "~2.2@dev",
