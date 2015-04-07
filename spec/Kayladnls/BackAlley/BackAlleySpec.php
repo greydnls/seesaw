@@ -2,7 +2,6 @@
 
 namespace spec\Kayladnls\BackAlley;
 
-use League\Route\RouteCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -17,7 +16,14 @@ class BackAlleySpec extends ObjectBehavior
     {
         $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob', function(){});
 
-        $this->route('JimBob')->shouldReturn('url/jim/bob');
+        $this->route('JimBob')->__toString()->shouldReturn('/url/jim/bob');
+    }
+
+    function it_can_be_accessed_statically()
+    {
+        $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob', function(){});
+
+        $this::route('JimBob')->__toString()->shouldReturn('/url/jim/bob');
     }
 
     function it_can_set_a_base_url()
@@ -31,6 +37,6 @@ class BackAlleySpec extends ObjectBehavior
     {
         $this->addRoute('GET', '/add/new/route', function(){});
 
-        $this->route('AddNewRoute')->shouldReturn('/add/new/route');
+        $this->route('AddNewRoute')->__toString()->shouldReturn('/add/new/route');
     }
 }

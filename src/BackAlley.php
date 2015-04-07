@@ -1,23 +1,33 @@
 <?php namespace Kayladnls\BackAlley;
 
+use FastRoute\BadRouteException;
 use League\Route\RouteCollection;
 
-class BackAlley extends RouteCollection
+class BackAlley
 {
     protected $namedRoutes = [];
-    protected $base_url;
+    protected $base_url = null;
+    private $router;
 
-    public static function __callStatic($method, $args)
+
+    public function __construct($router = null)
     {
-        if ($method == "route")
-        {
-            echo "YOLO";
-        }
+        $this->router = ($router) ?: new RouteCollection();
     }
 
-    public function setBaseUrl($url)
+    /**  As of PHP 5.3.0  */
+    public static function __callStatic($name, $arguments)
     {
-        $this->base_url = $url;
+        // Note: value of $name is case sensitive.
+        echo "Calling static method '$name' "
+            . implode(', ', $arguments) . "\n";
+    }
+
+    public function __call($method, $args)
+    {
+        if (method_exists($this->router, $method)) {
+            return call_user_func_array(array($this->router, $method), $args);
+        }
     }
 
     public function getBaseUrl()
@@ -25,36 +35,37 @@ class BackAlley extends RouteCollection
         return $this->base_url;
     }
 
+    public function setBaseUrl($url)
+    {
+        $this->base_url = $url;
+    }
+
     public function route($name)
     {
         if (isset($this->namedRoutes[$name])) {
-            return $this->namedRoutes[$name];
+            $route = $this->namedRoutes[$name];
+        }
+        else if ($this->inferRoute($name) !== false) {
+            $route = $this->inferRoute($name);
+        }
+        else {
+            throw new BadRouteException('Route Not Found');
         }
 
-        if ($this->inferRoute($name) !== false) {
-            return $this->inferRoute($name);
-        }
-    }
-
-    /**
-     * Add a named route to the collection
-     */
-    public function addNamedRoute($name, $method, $route, $handler, $strategy = null)
-    {
-        $this->namedRoutes[$name] = $route;
-        parent::addRoute($method, $route, $handler, $strategy);
+        return Route::create($route, $this->base_url);
     }
 
     private function inferRoute($name)
     {
         $named_route = $this->parseCamel($name);
 
-        $registered_routes = $this->getData()[0];
+        $registered_routes = $this->router->getData()[0];
 
-        if (isset($registered_routes[$named_route ]))
+        if (isset($registered_routes[$named_route])) {
             return $named_route;
-        else
+        } else {
             return false;
+        }
     }
 
     private function parseCamel($class_name)
@@ -66,5 +77,14 @@ class BackAlley extends RouteCollection
         }
 
         return implode('', $return);
+    }
+
+    /**
+     * Add a named route to the collection
+     */
+    public function addNamedRoute($name, $method, $route, $handler, $strategy = null)
+    {
+        $this->namedRoutes[$name] = $route;
+        $this->router->addRoute($method, $route, $handler, $strategy);
     }
 }
