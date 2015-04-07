@@ -24,4 +24,16 @@ class RouteSpec extends ObjectBehavior
         $this->beConstructedThrough('create', ['/yolo/friend/blah', 'http://google.com']);
         $this->secure()->__toString()->shouldReturn('https://google.com/yolo/friend/blah');
     }
+
+    public function it_cannot_echo_secure_without_a_base_rule()
+    {
+        $this->beConstructedThrough('create', ['/yolo/friend/blah']);
+        $this->shouldThrow('Exception')->duringSecure();
+    }
+
+    public function it_can_echo_relative()
+    {
+        $this->beConstructedThrough('create', ['/yolo/friend/blah', 'http://google.com']);
+        $this->relative()->__toString()->shouldReturn('/yolo/friend/blah');
+    }
 }

@@ -63,7 +63,8 @@ class BackAlley
 
         if (isset($registered_routes[$named_route])) {
             return $named_route;
-        } else {
+        }
+        else {
             return false;
         }
     }
