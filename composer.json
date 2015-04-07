@@ -1,0 +1,25 @@
+{
+  "name": "kayladnls/backalley",
+  "description": "Reverse Routing",
+  "require": {
+    "league/route": "~1.0@dev",
+    "league/url": "~4.0@dev"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "~2.2@dev",
+    "phpspec/nyan-formatters": "~1.0@dev"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kayla Daniels",
+      "email": "kayladnls@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Kayladnls\\BackAlley\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
