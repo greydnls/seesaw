@@ -19,6 +19,13 @@ class SeesawSpec extends ObjectBehavior
         $this->route('JimBob')->__toString()->shouldReturn('/url/jim/bob');
     }
 
+    function it_can_add_a_parameterized_route()
+    {
+        $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob/{id}', function(){});
+
+        $this->route('JimBob:123')->__toString()->shouldReturn('/url/jim/bob/123');
+    }
+
     function it_can_be_accessed_statically()
     {
         $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob', function(){});

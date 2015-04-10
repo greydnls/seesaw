@@ -42,6 +42,8 @@ class Seesaw
 
     public function route($name)
     {
+        list($name, $parameters) = $this->getCleanedName($name);
+
         if (isset($this->namedRoutes[$name])) {
             $route = $this->namedRoutes[$name];
         }
@@ -52,7 +54,17 @@ class Seesaw
             throw new BadRouteException('Route Not Found');
         }
 
-        return Route::create($route, $this->base_url);
+        return Route::create($route, $this->base_url, $parameters);
+    }
+
+    private function getCleanedName($name)
+    {
+        $pieces = explode(':', $name);
+
+        $base = array_shift($pieces);
+
+        return [$base, $pieces];
+
     }
 
     private function inferRoute($name)

@@ -16,15 +16,17 @@ class Route
     protected $base_url;
     protected $url_string;
 
-    private function __construct($route, $base_url = null)
+    private function __construct($route, $base_url = null, $parameters = array())
     {
         $this->url_string = $route;
         $this->base_url = $base_url;
+        $this->parameters = $parameters;
+
     }
 
-    public static function create($route, $base_url = null)
+    public static function create($route, $base_url = null, $parameters = array())
     {
-        return new static($route, $base_url);
+        return new static($route, $base_url, $parameters);
     }
 
     function __toString()
@@ -36,6 +38,8 @@ class Route
         $this->base_url = trim($this->base_url, '/');
         $this->url_string = trim($this->url_string, '/');
 
+        $this->compileParameters();
+
         if ($this->is_relative == true) {
             $return_url = "/" . $this->url_string;
         }
@@ -44,6 +48,21 @@ class Route
         }
 
         return $return_url;
+    }
+
+    private function compileParameters()
+    {
+        $pieces = explode('/', $this->url_string);
+        foreach ($pieces as $k => $piece)
+        {
+            preg_match("/{.*}/", $piece, $matches);
+
+            if (!empty($matches))
+            {
+                $pieces[$k] = array_shift($this->parameters);
+            }
+        }
+        $this->url_string = implode('/', $pieces);
     }
 
     public function secure()
