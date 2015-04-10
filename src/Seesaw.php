@@ -15,14 +15,6 @@ class Seesaw
         $this->router = ($router) ?: new RouteCollection();
     }
 
-    /**  As of PHP 5.3.0  */
-    public static function __callStatic($name, $arguments)
-    {
-        // Note: value of $name is case sensitive.
-        echo "Calling static method '$name' "
-            . implode(', ', $arguments) . "\n";
-    }
-
     public function __call($method, $args)
     {
         if (method_exists($this->router, $method)) {
