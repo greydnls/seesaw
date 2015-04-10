@@ -23,7 +23,7 @@ class SeesawSpec extends ObjectBehavior
     {
         $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob/{id}', function(){});
 
-        $this->route('JimBob:123')->__toString()->shouldReturn('/url/jim/bob/123');
+        $this->route('JimBob', [123])->__toString()->shouldReturn('/url/jim/bob/123');
     }
 
     function it_can_be_accessed_statically()
