@@ -14,19 +14,43 @@ class Route
     protected $force_ssl = false;
     protected $is_relative = false;
     protected $base_url;
+
+    /**
+     * @var string
+     */
+    protected $verb;
+
+    /**
+     * @var string
+     */
     protected $url_string;
 
-    private function __construct($route, $base_url = null, $parameters = array())
+
+    /**
+     * @var string
+     */
+    protected $action;
+
+
+    /**
+     * @var array
+     */
+    private $acceptable_verbs = ['POST', 'PUT', 'DELETE', 'GET'];
+
+
+    private function __construct($verb, $url, $action, $base_url = null, $parameters = array())
     {
-        $this->url_string = $route;
+        $this->validateVerb($verb);
+        $this->action = $action;
+        $this->url_string = $url;
         $this->base_url = $base_url;
         $this->parameters = $parameters;
 
     }
 
-    public static function create($route, $base_url = null, $parameters = array())
+    public static function reverse($route, $base_url = null, $parameters = array())
     {
-        return new static($route, $base_url, $parameters);
+        return new static("GET", $route, null, $base_url, $parameters);
     }
 
     function __toString()
@@ -83,5 +107,91 @@ class Route
         return $this;
     }
 
+    /**
+     * @param $verb
+     */
+    private function validateVerb($verb)
+    {
+        if (!in_array($verb, $this->acceptable_verbs)) {
+            throw new \InvalidArgumentException('Invalid Route Verb Supplied.');
+        }
+
+        $this->verb = $verb;
+    }
+
+    /**
+     * @param $url
+     * @param $action
+     * @return static
+     */
+    public static function get($url, $action, $base_url = null, $parameters = array())
+    {
+        return new static('GET', $url, $action, $base_url, $parameters);
+    }
+
+    /**
+     * @param string $url
+     * @param string $action
+     * @return static
+     */
+    public static function post($url, $action, $base_url = null, $parameters = array())
+    {
+        return new static('POST', $url, $action, $base_url, $parameters);
+    }
+
+    /**
+     * @param string $url
+     * @param string $action
+     * @return static
+     */
+    public static function delete($url, $action, $base_url = null, $parameters = array())
+    {
+        return new static('DELETE', $url, $action, $base_url, $parameters);
+    }
+
+    /**
+     * @param string $url
+     * @param string $action
+     * @return static
+     */
+    public static function put($url, $action, $base_url = null, $parameters = array())
+    {
+        return new static('PUT', $url, $action, $base_url, $parameters);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVerb()
+    {
+        return $this->verb;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url_string;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    public function updateUrl($segment)
+    {
+        $segment = trim($segment, "/");
+        $this->url_string = $segment."/". $this->url_string;
+
+        $this->url_string = str_replace('//', '/', $this->url_string);
+    }
+
 
 }
+
+

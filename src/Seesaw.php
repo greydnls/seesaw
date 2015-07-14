@@ -1,7 +1,6 @@
 <?php namespace Kayladnls\Seesaw;
 
 use FastRoute\BadRouteException;
-use League\Route\RouteCollection;
 
 class Seesaw
 {
@@ -52,7 +51,7 @@ class Seesaw
             throw new BadRouteException('Route Not Found');
         }
 
-        return Route::create($route, $this->base_url, $parameters);
+        return Route::reverse($route, $this->base_url, $parameters);
     }
 
     private function inferRoute($name)
@@ -85,7 +84,12 @@ class Seesaw
      */
     public function addNamedRoute($name, $method, $route, $handler, $strategy = null)
     {
-        $this->namedRoutes[$name] = $route;
-        $this->router->addRoute($method, $route, $handler, $strategy);
+        $verb = strtolower($method);
+        $route = Route::$verb($route, $handler);
+
+        $this->namedRoutes[$name] = $route->getUrl();
+
+
+        $this->router->add($route);
     }
 }

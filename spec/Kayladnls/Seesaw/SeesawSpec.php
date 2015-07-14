@@ -2,6 +2,7 @@
 
 namespace spec\Kayladnls\Seesaw;
 
+use Kayladnls\Seesaw\Route;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -42,7 +43,7 @@ class SeesawSpec extends ObjectBehavior
 
     function it_can_infer_a_route_name()
     {
-        $this->addRoute('GET', '/add/new/route', function(){});
+        $this->add(Route::get('/add/new/route', function(){}));
 
         $this->route('AddNewRoute')->__toString()->shouldReturn('/add/new/route');
     }
