@@ -48,11 +48,6 @@ class Route
 
     }
 
-    public static function reverse($route, $base_url = null, $parameters = array())
-    {
-        return new static("GET", $route, null, $base_url, $parameters);
-    }
-
     function __toString()
     {
         if ($this->force_ssl == true) {

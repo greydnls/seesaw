@@ -43,7 +43,7 @@ class Seesaw
             throw new BadRouteException('Route Not Found');
         }
 
-        return Route::reverse($route, $this->base_url, $parameters);
+        return Route::get($route, null, $this->base_url, $parameters);
     }
 
     private function inferRoute($name)
