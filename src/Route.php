@@ -11,8 +11,18 @@ namespace Kayladnls\Seesaw;
 
 class Route
 {
+    /**
+     * @var bool
+     */
     protected $force_ssl = false;
+    /**
+     * @var bool
+     */
     protected $is_relative = false;
+
+    /**
+     * @var null | string $base_url
+     */
     protected $base_url;
 
     /**
@@ -35,19 +45,28 @@ class Route
     /**
      * @var array
      */
-    private $acceptable_verbs = ['POST', 'PUT', 'DELETE', 'GET'];
+    protected $acceptable_verbs = ['POST', 'PUT', 'DELETE', 'GET'];
 
 
-    private function __construct($verb, $url, $action, $base_url = null, $parameters = array())
+    /**
+     * @param $verb
+     * @param $url
+     * @param $action
+     * @param null $base_url
+     * @param array $parameters
+     */
+    private function __construct($verb, $url, $action, $base_url = null, $parameters = [])
     {
         $this->validateVerb($verb);
         $this->action = $action;
         $this->url_string = $url;
         $this->base_url = $base_url;
         $this->parameters = $parameters;
-
     }
 
+    /**
+     * @return string
+     */
     function __toString()
     {
         if ($this->force_ssl == true) {
@@ -69,6 +88,9 @@ class Route
         return $return_url;
     }
 
+    /**
+     *
+     */
     private function compileParameters()
     {
         $pieces = explode('/', $this->url_string);
@@ -84,6 +106,10 @@ class Route
         $this->url_string = implode('/', $pieces);
     }
 
+    /**
+     * @return $this
+     * @throws \Exception
+     */
     public function secure()
     {
         if ($this->base_url == null) {
@@ -95,6 +121,9 @@ class Route
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function relative()
     {
         $this->is_relative = true;
@@ -117,9 +146,11 @@ class Route
     /**
      * @param $url
      * @param $action
+     * @param null $base_url
+     * @param array $parameters
      * @return static
      */
-    public static function get($url, $action, $base_url = null, $parameters = array())
+    public static function get($url, $action, $base_url = null, $parameters = [])
     {
         return new static('GET', $url, $action, $base_url, $parameters);
     }
@@ -127,9 +158,11 @@ class Route
     /**
      * @param string $url
      * @param string $action
-     * @return static
+     * @param null $base_url
+     * @param array $parameters
+     * @return Route
      */
-    public static function post($url, $action, $base_url = null, $parameters = array())
+    public static function post($url, $action, $base_url = null, $parameters = [])
     {
         return new static('POST', $url, $action, $base_url, $parameters);
     }
@@ -137,9 +170,11 @@ class Route
     /**
      * @param string $url
      * @param string $action
-     * @return static
+     * @param null $base_url
+     * @param array $parameters
+     * @return Route
      */
-    public static function delete($url, $action, $base_url = null, $parameters = array())
+    public static function delete($url, $action, $base_url = null, $parameters = [])
     {
         return new static('DELETE', $url, $action, $base_url, $parameters);
     }
@@ -147,9 +182,11 @@ class Route
     /**
      * @param string $url
      * @param string $action
-     * @return static
+     * @param null $base_url
+     * @param array $parameters
+     * @return Route
      */
-    public static function put($url, $action, $base_url = null, $parameters = array())
+    public static function put($url, $action, $base_url = null, $parameters = [])
     {
         return new static('PUT', $url, $action, $base_url, $parameters);
     }
@@ -178,6 +215,9 @@ class Route
         return $this->action;
     }
 
+    /**
+     * @param $segment
+     */
     public function updateUrl($segment)
     {
         $segment = trim($segment, "/");

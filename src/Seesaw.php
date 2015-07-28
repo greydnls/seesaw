@@ -4,21 +4,26 @@ use FastRoute\BadRouteException;
 
 class Seesaw
 {
+    /**
+     * @var array
+     */
     protected $namedRoutes = [];
+
+    /**
+     * @var null
+     */
     protected $base_url = null;
+
+    /**
+     * @var RouteCollection
+     */
     private $router;
 
 
-    public function __construct($router = null)
+    public function __construct(RouteCollection $router = null, $base_url = null)
     {
         $this->router = ($router) ?: new RouteCollection();
-    }
-
-    public function __call($method, $args)
-    {
-        if (method_exists($this->router, $method)) {
-            return call_user_func_array(array($this->router, $method), $args);
-        }
+        $this->base_url = $base_url;
     }
 
     public function getBaseUrl()
@@ -26,25 +31,35 @@ class Seesaw
         return $this->base_url;
     }
 
-    public function setBaseUrl($url)
-    {
-        $this->base_url = $url;
-    }
-
-    public function route($name, $parameters = array())
+    public function route($name, $parameters = [])
     {
         if (isset($this->namedRoutes[$name])) {
             $route = $this->namedRoutes[$name];
-        }
-        else if ($this->inferRoute($name) !== false) {
-            $route = $this->inferRoute($name);
-        }
-        else {
-            throw new BadRouteException('Route Not Found');
+        } else {
+            if ($this->inferRoute($name) !== false) {
+                $route = $this->inferRoute($name);
+            } else {
+                throw new BadRouteException('Route Not Found');
+            }
         }
 
         return Route::get($route, null, $this->base_url, $parameters);
     }
+
+    /**
+     * Add a named route to the collection
+     */
+    public function addNamedRoute($name, $method, $route, $handler)
+    {
+        $verb = strtolower($method);
+        $route = Route::$verb($route, $handler);
+
+        $this->namedRoutes[$name] = $route->getUrl();
+
+
+        $this->router->add($route);
+    }
+
 
     private function inferRoute($name)
     {
@@ -55,9 +70,9 @@ class Seesaw
         if (isset($registered_routes[$named_route])) {
             return $named_route;
         }
-        else {
-            return false;
-        }
+
+        return false;
+
     }
 
     private function parseCamel($class_name)
@@ -71,17 +86,10 @@ class Seesaw
         return implode('', $return);
     }
 
-    /**
-     * Add a named route to the collection
-     */
-    public function addNamedRoute($name, $method, $route, $handler, $strategy = null)
+    public function __call($method, $args)
     {
-        $verb = strtolower($method);
-        $route = Route::$verb($route, $handler);
-
-        $this->namedRoutes[$name] = $route->getUrl();
-
-
-        $this->router->add($route);
+        if (method_exists($this->router, $method)) {
+            return call_user_func_array([$this->router, $method], $args);
+        }
     }
 }

@@ -7,12 +7,12 @@ class RouteCollection extends Router
     /**
      * @var Route[]
      */
-    private $route_objects = [];
+    protected $route_objects = [];
 
     /**
      * @var RouteGroup[]
      */
-    private $groups = [];
+    protected $groups = [];
 
     /**
      * @param Route $route

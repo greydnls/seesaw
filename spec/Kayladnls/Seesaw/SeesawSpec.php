@@ -3,8 +3,10 @@
 namespace spec\Kayladnls\Seesaw;
 
 use Kayladnls\Seesaw\Route;
+use Kayladnls\Seesaw\RouteCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\Response;
 
 class SeesawSpec extends ObjectBehavior
 {
@@ -36,6 +38,7 @@ class SeesawSpec extends ObjectBehavior
 
     function it_can_set_a_base_url()
     {
+        $this->beConstructedWith(new RouteCollection(), 'http://yolo.com');
         $this->setBaseUrl('http://yolo.com');
 
         $this->getBaseUrl()->shouldReturn('http://yolo.com');
@@ -46,5 +49,19 @@ class SeesawSpec extends ObjectBehavior
         $this->add(Route::get('/add/new/route', function(){}));
 
         $this->route('AddNewRoute')->__toString()->shouldReturn('/add/new/route');
+    }
+
+    function it_can_add_an_unnamed_route()
+    {
+        $this->add(Route::get('/one/two/three',
+            function($request, $response)
+            {
+                $response->setContent('YOLO');
+                return new $response;
+            })
+        );
+
+        $this->getDispatcher()->dispatch('GET', '/one/two/three')->shouldHaveType(Response::class);
+        $this->getDispatcher()->dispatch('GET', '/one/two/three')->getContent()->shouldReturn("YOLO");
     }
 }
