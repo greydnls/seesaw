@@ -57,11 +57,12 @@ class SeesawSpec extends ObjectBehavior
             function($request, $response)
             {
                 $response->setContent('YOLO');
-                return new $response;
+                return $response;
             })
         );
 
-        $this->getDispatcher()->dispatch('GET', '/one/two/three')->shouldHaveType(Response::class);
-        $this->getDispatcher()->dispatch('GET', '/one/two/three')->getContent()->shouldReturn("YOLO");
+        $r = $this->getDispatcher()->dispatch('GET', '/one/two/three');
+        $r->shouldHaveType(Response::class);
+        $r->getContent()->shouldReturn("YOLO");
     }
 }

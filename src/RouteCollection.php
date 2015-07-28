@@ -1,7 +1,6 @@
 <?php namespace Kayladnls\Seesaw;
 
 use League\Container\Container;
-use League\Container\ContainerInterface;
 use League\Route\RouteCollection as Router;
 
 class RouteCollection extends Router
@@ -16,7 +15,7 @@ class RouteCollection extends Router
      */
     protected $groups = [];
 
-    public function __construct(ContainerInterface $container = null)
+    public function __construct($container = null)
     {
         if ($container == null){
             $container = new Container();
