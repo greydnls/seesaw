@@ -4,41 +4,54 @@ namespace spec\Kayladnls\Seesaw;
 
 use Kayladnls\Seesaw\Route;
 use Kayladnls\Seesaw\RouteCollection;
+use League\Container\Container;
+use League\Container\ContainerInterface;
+use League\Route\Dispatcher;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Response;
 
 class SeesawSpec extends ObjectBehavior
 {
+    function let(ContainerInterface $container)
+    {
+        $this->beConstructedWith(null, null, $container);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Kayladnls\Seesaw\Seesaw');
     }
 
-    function it_can_add_a_named_route()
+    function it_can_add_a_named_outputRoute()
     {
         $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob', function(){});
 
-        $this->route('JimBob')->__toString()->shouldReturn('/url/jim/bob');
+        $this->outputRoute('JimBob')->__toString()->shouldReturn('/url/jim/bob');
     }
 
-    function it_can_add_a_parameterized_route()
+    public function it_will_throw_error_when_it_cannot_find_a_named_outputRoute()
+    {
+        $this->shouldThrow('\FastRoute\BadRouteException')->duringOutputRoute('something_something_blah_blah');
+    }
+
+    function it_can_add_a_parameterized_outputRoute()
     {
         $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob/{id}', function(){});
 
-        $this->route('JimBob', [123])->__toString()->shouldReturn('/url/jim/bob/123');
+        $this->outputRoute('JimBob', [123])->__toString()->shouldReturn('/url/jim/bob/123');
     }
 
     function it_can_be_accessed_statically()
     {
         $this->addNamedRoute('JimBob', 'GET', 'url/jim/bob', function(){});
 
-        $this::route('JimBob')->__toString()->shouldReturn('/url/jim/bob');
+        $this::outputRoute('JimBob')->__toString()->shouldReturn('/url/jim/bob');
     }
 
     function it_can_set_a_base_url()
     {
-        $this->beConstructedWith(new RouteCollection(), 'http://yolo.com');
+        $this->beConstructedWith(new RouteCollection(), 'http://yolo.com', new Container());
         $this->setBaseUrl('http://yolo.com');
 
         $this->getBaseUrl()->shouldReturn('http://yolo.com');
@@ -48,21 +61,20 @@ class SeesawSpec extends ObjectBehavior
     {
         $this->add(Route::get('/add/new/route', function(){}));
 
-        $this->route('AddNewRoute')->__toString()->shouldReturn('/add/new/route');
+        $this->outputRoute('AddNewRoute')->__toString()->shouldReturn('/add/new/route');
     }
 
-    function it_can_add_an_unnamed_route()
+    function it_can_add_an_unnamed_outputRoute()
     {
-        $this->add(Route::get('/one/two/three',
-            function($request, $response)
+        $route = Route::get('/one/two/three',
+            function($request, Response $response)
             {
                 $response->setContent('YOLO');
                 return $response;
-            })
-        );
+            });
 
-        $r = $this->getDispatcher()->dispatch('GET', '/one/two/three');
-        $r->shouldHaveType(Response::class);
-        $r->getContent()->shouldReturn("YOLO");
+        $this->add($route);
+
+        $this->routeIsRegistered($route)->shouldReturn(true);
     }
 }

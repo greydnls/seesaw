@@ -31,16 +31,14 @@ class Seesaw
         return $this->base_url;
     }
 
-    public function route($name, $parameters = [])
+    public function outputRoute($name, $parameters = [])
     {
         if (isset($this->namedRoutes[$name])) {
             $route = $this->namedRoutes[$name];
+        } elseif ($this->inferRoute($name) !== false) {
+            $route = $this->inferRoute($name);
         } else {
-            if ($this->inferRoute($name) !== false) {
-                $route = $this->inferRoute($name);
-            } else {
-                throw new BadRouteException('Route Not Found');
-            }
+            throw new BadRouteException('Route Not Found or Does Not have Name');
         }
 
         return Route::get($route, null, $this->base_url, $parameters);

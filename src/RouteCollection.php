@@ -17,7 +17,7 @@ class RouteCollection extends Router
 
     public function __construct($container = null)
     {
-        if ($container == null){
+        if ($container == null) {
             $container = new Container();
         }
         parent::__construct($container);
@@ -52,6 +52,17 @@ class RouteCollection extends Router
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    public function routeIsRegistered($route)
+    {
+        foreach ($this->route_objects as $route_object) {
+            if ($route->getUrl() == $route_object->getUrl()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
