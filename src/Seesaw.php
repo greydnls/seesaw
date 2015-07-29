@@ -20,9 +20,9 @@ class Seesaw
     private $router;
 
 
-    public function __construct(RouteCollection $router = null, $base_url = null)
+    public function __construct(RouteCollection $router = null, $base_url = null, $container)
     {
-        $this->router = ($router) ?: new RouteCollection();
+        $this->router = ($router) ?: new RouteCollection($container);
         $this->base_url = $base_url;
     }
 
@@ -55,7 +55,6 @@ class Seesaw
         $route = Route::$verb($route, $handler);
 
         $this->namedRoutes[$name] = $route->getUrl();
-
 
         $this->router->add($route);
     }
