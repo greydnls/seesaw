@@ -63,7 +63,7 @@ class RouteSpec extends ObjectBehavior
         $this->beConstructedThrough('get', ['alias', 'action']);
         $this->updateUrl('/yolo/fomo');
 
-        $this->getUrl()->shouldReturn('yolo/fomo/alias');
+        $this->getUrl()->shouldReturn('/yolo/fomo/alias');
     }
 
     public function it_can_be_echoed()

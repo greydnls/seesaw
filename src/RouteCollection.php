@@ -42,7 +42,6 @@ class RouteCollection extends Router
         $group->updateRoutes();
 
         foreach ($group->getRoutes() as $route) {
-            $this->route_objects[] = $route;
             $this->add($route);
         }
         $this->groups[] = $group;
