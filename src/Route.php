@@ -232,7 +232,6 @@ class Route
      */
     public function updateUrl($segment)
     {
-        $segment = trim($segment, "/");
         $this->url_string = $segment."/". $this->url_string;
 
         $this->url_string = str_replace('//', '/', $this->url_string);
