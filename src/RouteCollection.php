@@ -43,6 +43,7 @@ class RouteCollection extends Router
 
         foreach ($group->getRoutes() as $route) {
             $this->route_objects[] = $route;
+            $this->add($route);
         }
         $this->groups[] = $group;
 
