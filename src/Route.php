@@ -45,7 +45,7 @@ class Route
     /**
      * @var array
      */
-    protected $acceptable_verbs = ['POST', 'PUT', 'DELETE', 'GET'];
+    protected $acceptable_verbs = ['POST', 'PUT', 'DELETE', 'GET', 'PATCH'];
 
 
     /**
@@ -189,6 +189,18 @@ class Route
     public static function put($url, $action, $base_url = null, $parameters = [])
     {
         return new static('PUT', $url, $action, $base_url, $parameters);
+    }
+
+    /**
+     * @param string $url
+     * @param string $action
+     * @param null $base_url
+     * @param array $parameters
+     * @return Route
+     */
+    public static function patch($url, $action, $base_url = null, $parameters = [])
+    {
+        return new static('PATCH', $url, $action, $base_url, $parameters);
     }
 
     /**

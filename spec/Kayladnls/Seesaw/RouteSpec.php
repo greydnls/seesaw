@@ -39,6 +39,14 @@ class RouteSpec extends ObjectBehavior
         $this->getVerb()->shouldReturn('DELETE');
     }
 
+    public function it_can_create_a_patch_route()
+    {
+        $this->beConstructedThrough('patch', ['alias', 'something']);
+        $this->shouldHaveType(Route::class);
+        $this->getVerb()->shouldReturn('PATCH');
+        $this->getUrl()->shouldReturn('alias');
+    }
+
     public function it_can_get_url()
     {
         $this->beConstructedThrough('get', ['alias', 'something']);
