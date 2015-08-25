@@ -19,6 +19,5 @@
     "psr-4": {
       "Kayladnls\\Seesaw\\": "src/"
     }
-  },
-  "minimum-stability": "dev"
+  }
 }
