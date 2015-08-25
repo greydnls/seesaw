@@ -15,6 +15,9 @@ class RouteCollection extends Router
      */
     protected $groups = [];
 
+    /**
+     * @param Container $container
+     */
     public function __construct($container = null)
     {
         if ($container == null) {
@@ -25,6 +28,7 @@ class RouteCollection extends Router
 
     /**
      * @param Route $route
+     * @return $this
      */
     public function add(Route $route)
     {
@@ -36,6 +40,7 @@ class RouteCollection extends Router
 
     /**
      * @param RouteGroup $group
+     * @return $this
      */
     public function addGroup(RouteGroup $group)
     {
@@ -49,11 +54,18 @@ class RouteCollection extends Router
         return $this;
     }
 
+    /**
+     * @return RouteGroup[]
+     */
     public function getGroups()
     {
         return $this->groups;
     }
 
+    /**
+     * @param Route $route
+     * @return bool
+     */
     public function routeIsRegistered($route)
     {
         foreach ($this->route_objects as $route_object) {

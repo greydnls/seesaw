@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kayladaniels
- * Date: 4/7/15
- * Time: 12:05 AM
- */
 
 namespace Kayladnls\Seesaw;
 
@@ -49,10 +43,10 @@ class Route
 
 
     /**
-     * @param $verb
-     * @param $url
-     * @param $action
-     * @param null $base_url
+     * @param string $verb
+     * @param string $url
+     * @param string $action
+     * @param string $base_url
      * @param array $parameters
      */
     private function __construct($verb, $url, $action, $base_url = null, $parameters = [])
@@ -88,9 +82,6 @@ class Route
         return $return_url;
     }
 
-    /**
-     *
-     */
     private function compileParameters()
     {
         $pieces = explode('/', $this->url_string);
@@ -132,7 +123,8 @@ class Route
     }
 
     /**
-     * @param $verb
+     * @param string $verb
+     * @throws \InvalidArgumentException
      */
     private function validateVerb($verb)
     {
@@ -144,9 +136,9 @@ class Route
     }
 
     /**
-     * @param $url
-     * @param $action
-     * @param null $base_url
+     * @param string $url
+     * @param string $action
+     * @param string $base_url
      * @param array $parameters
      * @return static
      */
@@ -158,7 +150,7 @@ class Route
     /**
      * @param string $url
      * @param string $action
-     * @param null $base_url
+     * @param string $base_url
      * @param array $parameters
      * @return Route
      */
@@ -170,7 +162,7 @@ class Route
     /**
      * @param string $url
      * @param string $action
-     * @param null $base_url
+     * @param string $base_url
      * @param array $parameters
      * @return Route
      */
@@ -182,7 +174,7 @@ class Route
     /**
      * @param string $url
      * @param string $action
-     * @param null $base_url
+     * @param string $base_url
      * @param array $parameters
      * @return Route
      */
@@ -194,7 +186,7 @@ class Route
     /**
      * @param string $url
      * @param string $action
-     * @param null $base_url
+     * @param string $base_url
      * @param array $parameters
      * @return Route
      */
@@ -228,7 +220,7 @@ class Route
     }
 
     /**
-     * @param $segment
+     * @param string $segment
      */
     public function updateUrl($segment)
     {
