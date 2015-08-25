@@ -2,6 +2,14 @@
 
 use FastRoute\BadRouteException;
 
+/**
+ * @method RouteCollection add(Route $route)
+ * @method RouteCollection addGroup(RouteGroup $group)
+ * @method RouteGroup[] getGroups()
+ * @method bool routeIsRegistered($route)
+ * @method Route|bool findByAction($action)
+ * @method RouteGroup|bool findGroupByRoute($route)
+ */
 class Seesaw
 {
     /**
