@@ -31,6 +31,3 @@ echo $this->route('JimBob')->relative(); // will output /url/jim/bob
 $seesaw->addNamedRoute('JimBob', 'GET', 'url/jim/bob/{id}', function(){});
 echo $seesaw->route('JimBob', [123]); // will output /url/jim/bob/123;
 ```
-
-### TODO
-- [ ] Add support for arrays as names with dot access
