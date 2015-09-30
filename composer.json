@@ -2,11 +2,11 @@
   "name": "kayladnls/seesaw",
   "description": "Routing, forward and backward.",
   "require": {
-    "league/route": "~1.0"
+    "league/route": "^1.2"
   },
   "require-dev": {
-    "phpspec/phpspec": "~2.2@dev",
-    "henrikbjorn/phpspec-code-coverage": "~1.0@dev"
+    "henrikbjorn/phpspec-code-coverage": "^1.0",
+    "phpspec/phpspec": "^2.2"
   },
   "license": "MIT",
   "authors": [
@@ -19,6 +19,5 @@
     "psr-4": {
       "Kayladnls\\Seesaw\\": "src/"
     }
-  },
-  "minimum-stability": "dev"
+  }
 }
