@@ -7,6 +7,9 @@ class RouteGroup
      */
     protected $routes = [];
 
+    /**
+     * @var string
+     */
     protected $url_segment;
 
     /**
@@ -14,7 +17,10 @@ class RouteGroup
      */
     protected $groups = [];
 
-
+    /**
+     * @param Route[] $routes
+     * @param string $url_segment
+     */
     public function __construct(array $routes = [], $url_segment = null)
     {
         $this->routes = $routes;
@@ -74,7 +80,7 @@ class RouteGroup
     }
 
     /**
-     * @param mixed $url_segment
+     * @param string $url_segment
      */
     public function setUrlSegment($url_segment)
     {
@@ -82,7 +88,7 @@ class RouteGroup
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUrlSegment()
     {

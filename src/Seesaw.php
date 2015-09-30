@@ -1,6 +1,7 @@
 <?php namespace Kayladnls\Seesaw;
 
 use FastRoute\BadRouteException;
+use League\Container\Container;
 
 /**
  * @method RouteCollection add(Route $route)
@@ -18,7 +19,7 @@ class Seesaw
     protected $namedRoutes = [];
 
     /**
-     * @var null
+     * @var string
      */
     protected $base_url = null;
 
@@ -28,17 +29,31 @@ class Seesaw
     private $router;
 
 
+    /**
+     * @param RouteCollection $router
+     * @param string $base_url
+     * @param Container $container
+     */
     public function __construct(RouteCollection $router = null, $base_url = null, $container)
     {
         $this->router = ($router) ?: new RouteCollection($container);
         $this->base_url = $base_url;
     }
 
+    /**
+     * @return string
+     */
     public function getBaseUrl()
     {
         return $this->base_url;
     }
 
+    /**
+     * @param string $name
+     * @param array $parameters
+     * @return Route
+     * @throws BadRouteException
+     */
     public function outputRoute($name, $parameters = [])
     {
         if (isset($this->namedRoutes[$name])) {
@@ -54,10 +69,17 @@ class Seesaw
 
     /**
      * Add a named route to the collection
+     *
+     * @param string $name
+     * @param string $method
+     * @param Route $route
+     * @param string $handler
      */
     public function addNamedRoute($name, $method, $route, $handler)
     {
         $verb = strtolower($method);
+
+        /* @var Route $route */
         $route = Route::$verb($route, $handler);
 
         $this->namedRoutes[$name] = $route->getUrl();
@@ -65,7 +87,10 @@ class Seesaw
         $this->router->add($route);
     }
 
-
+    /**
+     * @param string $name
+     * @return bool|string
+     */
     private function inferRoute($name)
     {
         $named_route = $this->parseCamel($name);
@@ -80,6 +105,10 @@ class Seesaw
 
     }
 
+    /**
+     * @param string $class_name
+     * @return string
+     */
     private function parseCamel($class_name)
     {
         $return = [];
@@ -91,6 +120,11 @@ class Seesaw
         return implode('', $return);
     }
 
+    /**
+     * @param string $method
+     * @param array $args
+     * @return mixed
+     */
     public function __call($method, $args)
     {
         if (method_exists($this->router, $method)) {
