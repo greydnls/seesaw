@@ -61,7 +61,7 @@ class Route
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         if ($this->force_ssl == true) {
             $this->base_url = str_replace('http://', 'https://', $this->base_url);
