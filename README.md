@@ -1,7 +1,7 @@
 # Seesaw
 Routing, backwards and forwards
 
-Seesaw is a reverse routing ornamentation that sits on top of [League/Route](http://github.com/thephpleague/route). All of the functionality of route is available, as well as the ability to reverse routes. 
+Seesaw is a reverse routing ornamentation that sits on top of [League/Route 1.*](http://github.com/thephpleague/route). All of the functionality of route is available, as well as the ability to reverse routes. 
 
 ### Usage: 
 #### Adding a named route. 
@@ -31,3 +31,6 @@ echo $this->route('JimBob')->relative(); // will output /url/jim/bob
 $seesaw->addNamedRoute('JimBob', 'GET', 'url/jim/bob/{id}', function(){});
 echo $seesaw->route('JimBob', [123]); // will output /url/jim/bob/123;
 ```
+
+##### Coming Soon: 
+This package will shortly be updated to work with the upcoming `league/route 2.0`
